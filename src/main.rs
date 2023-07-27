@@ -23,9 +23,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _from = args.from;
     let _to = args.to;
 
+    println!("From: {}", _from);
+    println!("To: {}", _to);
+
     let mut from_crs = String::new();
     let mut to_crs = String::new();
-
+    //
     let res = reqwest::get(
         "https://raw.githubusercontent.com/davwheat/uk-railway-stations/main/stations.json",
     )
@@ -44,8 +47,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
     });
 
-    println!("From: {}", from_crs.as_str());
-    println!("To: {}", to_crs.as_str());
+    println!("From CRS: {}", from_crs);
+    println!("To CRS: {}", to_crs);
 
     let client = reqwest::Client::new();
 
@@ -62,6 +65,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await?
         .json::<serde_json::Value>()
         .await?;
+
+    if trains["services"].is_null() {
+        return Err("No trains found".into());
+    }
 
     trains["services"].as_array().iter().for_each(|x| {
         x.iter().for_each(|s| {
