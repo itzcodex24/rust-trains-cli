@@ -13,9 +13,14 @@
 
 - Wanna add it to your path?
 
-### Using ZSH
+### Using ZSH 👨‍💻
 
 - Run `nvim ~/.zshrc`
 - Add the release to your path: `export PATH="$HOME/path_to_train_cli/target/release/":$PATH`
 - Done! Refresh the config file: `source ~/.zshrc`
 - And RUN! `train-cli --from {station} --to {station}`
+
+### Does your station name include whitespace? 🚝
+
+- Simply specify the station name while surrounding it in speech marks `""`
+- `train-cli --from "{station}" --to "{station}"`
