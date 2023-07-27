@@ -28,7 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut from_crs = String::new();
     let mut to_crs = String::new();
-    //
+
     let res = reqwest::get(
         "https://raw.githubusercontent.com/davwheat/uk-railway-stations/main/stations.json",
     )
@@ -47,8 +47,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
     });
 
-    println!("From CRS: {}", from_crs);
-    println!("To CRS: {}", to_crs);
+    if from_crs.is_empty() {
+        return Err("From station not found".into());
+    }
+
+    if to_crs.is_empty() {
+        return Err("To station not found".into());
+    }
 
     let client = reqwest::Client::new();
 
