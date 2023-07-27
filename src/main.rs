@@ -1,4 +1,5 @@
 use clap::Parser;
+use std::time::SystemTime;
 
 #[derive(Debug)]
 struct Data {
@@ -28,6 +29,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut from_crs = String::new();
     let mut to_crs = String::new();
+    let mut from_coords = String::new();
+    let mut to_coords = String::new();
 
     let res = reqwest::get(
         "https://raw.githubusercontent.com/davwheat/uk-railway-stations/main/stations.json",
@@ -40,9 +43,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         x.iter().for_each(|y| {
             if y["stationName"] == _from {
                 from_crs = y["crsCode"].as_str().unwrap().to_owned();
+                from_coords = format!("{},{}", y["lat"], y["long"])
             }
             if y["stationName"] == _to {
                 to_crs = y["crsCode"].as_str().unwrap().to_owned();
+                to_coords = format!("{},{}", y["lat"], y["long"])
             }
         })
     });
